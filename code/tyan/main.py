@@ -12,16 +12,20 @@ bot = Bot(token=TKN)
 # Диспетчер
 dp = Dispatcher()
 
+#ебашем фильтр для проерки подписки
 
 @dp.message(Command("start"))
-async def cmd_start(message: types.Message):
-    await message.answer("ПЕНИСЫ")
+async def cmd_start(msg: types.Message):
+    res = await bot.get_chat_member(chat_id="@tyan_corp", user_id=msg.from_user.id)
+    await msg.answer(res.status)
 
-# Запуск процесса поллинга новых апдейтов
+
 async def main():
     await dp.start_polling(bot)
+
 @dp.message()
 async def all(msg: types.Message):
-    await msg.answer("ТУТ БУДЕТ МНОГО ДРОЧЕВА И ДЕНЕГ")
+    await msg.answer("ТУТ МНОГО ДРОЧЕВА И ДЕНЕГ")
+    
 if __name__ == "__main__":
     asyncio.run(main())
