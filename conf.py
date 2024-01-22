@@ -1,0 +1,6 @@
+from tkn import token
+
+TKN = token
+
+i_gif = "CgACAgIAAxkBAANoZa5wnRbSGlP8lDxvDYG47nIye2MAAlY9AALfRnBJCm2SYSX4Csg0BA"
+bf = "CgACAgIAAxkBAANtZa5yEUVIl0ntVAtq1LIKU2owaNwAAqM3AALlTmFJMS10kvSRlqY0BA"
