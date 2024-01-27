@@ -1,6 +1,6 @@
-from tkn import token
+from tkn import TKN
+N = TKN
 
-TKN = token
 
 i_gif = "CgACAgIAAxkBAANoZa5wnRbSGlP8lDxvDYG47nIye2MAAlY9AALfRnBJCm2SYSX4Csg0BA"
 bf = "CgACAgQAAxkBAAIBOGWwCajGBygDG814kWhF0t39ph2MAAIGAwACg8cEU3yBiCTVjd2iNAQ"
@@ -9,3 +9,5 @@ ebsh = "CgACAgQAAxkBAAO3Za8QQlbGsSSLuOS9ljduvmaS6YkAAhwOAAL0tGlRs-8GoGaPPhE0BA"
 
 
 brod = 703372026
+ya = 976743098
+ADMINS = [brod]

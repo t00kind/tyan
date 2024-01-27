@@ -1,18 +1,20 @@
-from asyncio import run
-import logging 
-from handlers import fund
+import asyncio
+import logging
 from aiogram import Bot, Dispatcher
 
+from conf import N
+from handlers import user, hokage
 
-from conf import TKN
 
 logging.basicConfig(level=logging.INFO)
 async def main():
-    bot = Bot(token=TKN, parse_mode="HTML")
+    bot = Bot(token=N, parse_mode="HTML")
     dp = Dispatcher()
-    dp.include_routers(fund.router)
+
+    dp.include_routers(hokage.router, user.router)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
+
 if __name__ == "__main__":
-    run(main())
+    asyncio.run(main())
