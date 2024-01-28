@@ -2,9 +2,8 @@ from typing import Callable, Awaitable, Dict, Any
 
 from aiogram import BaseMiddleware
 from aiogram.types import Message
-
-from keyboards.inline import sub_channel
-
+from conf import * 
+from keyboards.base import based
 
 class CheckSubscription(BaseMiddleware):
 
@@ -14,12 +13,10 @@ class CheckSubscription(BaseMiddleware):
         event: Message,
         data: Dict[str, Any]
     ) -> Any:
-        chat_member = await event.bot.get_chat_member("@fsoky_community", event.from_user.id)
+        chat_member = await event.bot.get_chat_member("@tyan_corp", event.from_user.id)
 
         if chat_member.status == "left":
-            await event.answer(
-                "Подпишись на канал, чтобы пользоваться ботом!",
-                reply_markup=sub_channel
-            )
+            await event.answer_animation(bf, caption="<i>Подпишишь скорее на канал, а потом я буду вся твоя</i>", 
+    reply_markup=based())
         else:
             return await handler(event, data)
