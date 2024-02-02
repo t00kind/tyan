@@ -7,7 +7,7 @@ from keyboards.base import hash, bash
 from aiogram.filters import BaseFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from database import add_all
+from database import add_all, get_all
 
 
 class IsAdmin(BaseFilter):
@@ -73,6 +73,19 @@ async def add(call: CallbackQuery, state: FSMContext):
     await call.message.answer("Для отмены введите /cancel")
     await call.message.answer("<b>Введите название</b>")
     await state.set_state(AddAnime.name)
+    await call.answer()
+
+@router.callback_query(F.data == "pop")
+async def add(call: CallbackQuery):
+    g = get_all()
+    res = ""
+
+    for i in g:
+        name = i[0]
+        code = i[4]
+        res += f"\n<code>{name}</code> \n"
+    got = "<b>Все что есть в Базе:</b>\n" + res
+    await call.message.answer_animation(ebsh, caption=got)
     await call.answer()
 
 

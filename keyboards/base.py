@@ -1,7 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
-
-
+from database import get_all
 def based() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.row(InlineKeyboardButton(text="Подписаться 🔗", url="https://t.me/tyan_corp"))
@@ -18,6 +17,7 @@ def hash() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.row(InlineKeyboardButton(text="Добавить аниме", callback_data="add"))
     kb.row(InlineKeyboardButton(text="Сменить режим", callback_data="switch"))
+    kb.row(InlineKeyboardButton(text="Общий список", callback_data="pop"))
     
     return kb.as_markup()
 def bash() -> InlineKeyboardMarkup:

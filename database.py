@@ -23,3 +23,7 @@ async def find_by_id(id):
     "code": az[4]
     }
     return res
+def get_all():
+    g = cur.execute(f"SELECT * FROM content")
+    return g.fetchall()
+    
