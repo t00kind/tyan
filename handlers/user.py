@@ -35,7 +35,11 @@ async def check_sub(call: CallbackQuery):
 @router.callback_query(F.data == "find")
 async def get_by_code(call: CallbackQuery, state: FSMContext):
     gs = await state.get_data()
-    g = gs["getid"]
+    if gs != {}:
+        g = gs["getid"]
+    else:
+        g = False
+
     if g:
         await call.message.answer("<b>Похоже вы искали это: </b>")
         res = await find_by_id(g)
