@@ -57,7 +57,9 @@ async def get_name(msg: Message, state: FSMContext):
     data = await state.get_data()
     await add_all(data)
     await state.clear()
+    kode = data["code"]
     await msg.answer("<b>Успех!</b> 🦾")
+    await msg.answer(f"Ссылка: https://t.me/an1tyan_bot?start={kode}")
     
 
 @router.message(Command("start"))
