@@ -17,6 +17,7 @@ router.message.middleware(CheckSubscription())
 
 class Cher(StatesGroup):
     iss = State()
+    getid = State()
 
 
 @router.callback_query(F.data == "check")
@@ -33,9 +34,18 @@ async def check_sub(call: CallbackQuery):
         await call.answer('Для начала подпишись на наш канал')
 @router.callback_query(F.data == "find")
 async def get_by_code(call: CallbackQuery, state: FSMContext):
-    await call.message.answer("Введите код")
-    await state.set_state(Cher.iss)
-    await call.answer()
+    gs = await state.get_data()
+    g = gs["getid"]
+    if g:
+        await call.message.answer("<b>Похоже вы искали это: </b>")
+        res = await find_by_id(g)
+        await state.clear()
+        await call.message.answer_photo(photo=res["photo"], caption=f"""<b>Название:</b> <i>{res["name"]}</i>\n\n<b>Описание:</b> {res["desc"]}\n\n<b>Автор/Студия: </b> {res["author"]}""")
+        await call.answer()
+    else:
+        await call.message.answer("Введите код")
+        await state.set_state(Cher.iss)
+        await call.answer()
 @router.callback_query(F.data == "show")
 async def shall(call: CallbackQuery):
     await call.message.delete()
@@ -47,7 +57,6 @@ async def finda(msg: Message, state: FSMContext):
     res = await find_by_id(aydi)
     await state.clear()
     await msg.answer_photo(photo=res["photo"], caption=f"""<b>Название:</b> <i>{res["name"]}</i>\n\n<b>Описание:</b> {res["desc"]}\n\n<b>Автор/Студия: </b> {res["author"]}""")
-
 
 
 @router.callback_query(F.data == "dream")
