@@ -9,8 +9,11 @@ def based() -> InlineKeyboardMarkup:
 
 def true() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
-    kb.row(InlineKeyboardButton(text="Найти по коду 🔎", callback_data="find"))
-    kb.row(InlineKeyboardButton(text="Показать список 🎇", callback_data="show"))
+    kb.row(InlineKeyboardButton(text="Найти 🔎", callback_data="find"))
+    return kb.as_markup()
+def false() -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.row(InlineKeyboardButton(text="Показать", callback_data="find"))
     return kb.as_markup()
 
 def hash() -> InlineKeyboardMarkup:
@@ -18,6 +21,11 @@ def hash() -> InlineKeyboardMarkup:
     kb.row(InlineKeyboardButton(text="Добавить аниме", callback_data="add"))
     kb.row(InlineKeyboardButton(text="Сменить режим", callback_data="switch"))
     kb.row(InlineKeyboardButton(text="Общий список", callback_data="pop"))
+    return kb.as_markup()
+
+def magic(link) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.row(InlineKeyboardButton(text="Смотреть у нас", url=link))
     
     return kb.as_markup()
 def bash() -> InlineKeyboardMarkup:

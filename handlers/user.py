@@ -4,7 +4,7 @@ from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 from conf import * 
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from keyboards.base import based, true, hash 
+from keyboards.base import based, true, hash, magic, false
 from check_sub import CheckSubscription
 from database import find_by_id
 from aiogram.fsm.context import FSMContext
@@ -21,17 +21,46 @@ class Cher(StatesGroup):
 
 
 @router.callback_query(F.data == "check")
-async def check_sub(call: CallbackQuery):
+async def check_sub(call: CallbackQuery, state: FSMContext):
     user = await call.bot.get_chat_member(chat_id='@tyan_corp', user_id=call.from_user.id)
 
     if user.status != 'left':
         await call.answer('Спасибо за подписку!')
-        await call.message.delete()
-        await call.message.answer_animation(baby_girl, caption="<b>Спасибо!</b>\nЯ могу найти уникальное аниме, по вашему коду.\nИли показать всё, что у меня есть в мыслях", reply_markup=true())
+        main = "<b>Спасибо!</b>\nЯ могу найти уникальное аниме, по вашему коду."
+        gs = await state.get_data()
+        if gs != {}:
+            g = gs["getid"]
+        else:
+            g = False
+        if g: 
+            add = f"\n<i>Обнаружен код</i>: <code>{g}</code>"
+            res = main + add
+            await call.message.answer_animation(baby_girl, caption=res, reply_markup=false())
+        else:
+            add = ''
+            res = main + add
+            await call.message.answer_animation(baby_girl, caption=res, reply_markup=true())
         
 
     else:
         await call.answer('Для начала подпишись на наш канал')
+@router.message()
+@router.message(Command("main"))
+async def baza(msg: Message, state: FSMContext):
+    main = "<b>Я могу найти уникальное аниме, по вашему коду."
+    gs = await state.get_data()
+    if gs != {}:
+        g = gs["getid"]
+    else:
+        g = False
+    if g: 
+        add = f"\n<i>Обнаружен код</i>: <code>{g}</code>"
+        res = main + add
+        await msg.answer_animation(baby_girl, caption=res, reply_markup=false())
+    else:
+        add = ''
+        res = main + add
+        await msg.answer_animation(baby_girl, caption=res, reply_markup=true())
 @router.callback_query(F.data == "find")
 async def get_by_code(call: CallbackQuery, state: FSMContext):
     gs = await state.get_data()
@@ -44,23 +73,18 @@ async def get_by_code(call: CallbackQuery, state: FSMContext):
         await call.message.answer("<b>Похоже вы искали это: </b>")
         res = await find_by_id(g)
         await state.clear()
-        await call.message.answer_photo(photo=res["photo"], caption=f"""<b>Название:</b> <i>{res["name"]}</i>\n\n<b>Описание:</b> {res["desc"]}\n\n<b>Автор/Студия: </b> {res["author"]}""")
+        await call.message.answer_photo(photo=res["photo"], caption=f"""<b>Название:</b> <i>{res["name"]}</i>\n\n<b>Описание:</b> {res["desc"]}""", reply_markup=magic(res["link"]))
         await call.answer()
     else:
         await call.message.answer("Введите код")
         await state.set_state(Cher.iss)
         await call.answer()
-@router.callback_query(F.data == "show")
-async def shall(call: CallbackQuery):
-    await call.message.delete()
-    await call.message.answer_animation(i_gif, caption="Функция на данный момента недоступна")
-    await call.answer()
 @router.message(Cher.iss)
 async def finda(msg: Message, state: FSMContext):
     aydi = msg.text
     res = await find_by_id(aydi)
     await state.clear()
-    await msg.answer_photo(photo=res["photo"], caption=f"""<b>Название:</b> <i>{res["name"]}</i>\n\n<b>Описание:</b> {res["desc"]}\n\n<b>Автор/Студия: </b> {res["author"]}""")
+    await msg.answer_photo(photo=res["photo"], caption=f"""<b>Название:</b> <i>{res["name"]}</i>\n\n<b>Описание:</b> {res["desc"]}\n""", reply_markup=magic(res["link"]))
 
 
 @router.callback_query(F.data == "dream")
@@ -78,7 +102,4 @@ async def app(msg: Message):
 @router.message(F.animation)
 async def ebash(msg: Message):
     await msg.answer(msg.animation.file_id)
-@router.message()
-@router.message(Command("main"))
-async def baza(msg: Message):
-    await msg.answer_animation(baby_girl, caption="<b>Спасибо!</b>\nЯ могу найти уникальное аниме, по вашему коду.\nИли показать всё, что у меня есть в мыслях", reply_markup=true())
+

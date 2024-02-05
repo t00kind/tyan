@@ -19,7 +19,7 @@ class AddAnime(StatesGroup):
     name = State()
     desc = State()
     photo = State()
-    author = State()
+    link = State()
     code = State()
     
 router = Router()
@@ -43,12 +43,12 @@ async def get_name(msg: Message, state: FSMContext):
 @router.message(AddAnime.photo, F.photo)
 async def get_name(msg: Message, state: FSMContext):
     await state.update_data(photo=msg.photo[0].file_id)
-    await msg.answer("<b>Название студии/имя автора</b>")
-    await state.set_state(AddAnime.author)
+    await msg.answer("<b>Пришлите ссылку на пост в канале</b>")
+    await state.set_state(AddAnime.link)
 
-@router.message(AddAnime.author)
+@router.message(AddAnime.link)
 async def get_name(msg: Message, state: FSMContext):
-    await state.update_data(author=msg.text)
+    await state.update_data(link=msg.text)
     await msg.answer("<b>Уникальное 3х значное число</b>")
     await state.set_state(AddAnime.code)
 @router.message(AddAnime.code)

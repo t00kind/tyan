@@ -4,10 +4,10 @@ db = sq.connect('tg.db')
 cur = db.cursor()
 
 
-cur.execute("CREATE TABLE IF NOT EXISTS content(name TEXT, desc TEXT, photo TEXT, author TEXT, code INTEGER PRIMARY KEY) ")
+cur.execute("CREATE TABLE IF NOT EXISTS content(name TEXT, desc TEXT, photo TEXT, link TEXT, code INTEGER PRIMARY KEY) ")
 db.commit()
 async def add_all(data):
-        cur.execute("INSERT INTO content (name, desc, photo, author, code) VALUES (?, ?, ?, ?, ?)", (data['name'], data['desc'], data['photo'], data['author'], data['code']))
+        cur.execute("INSERT INTO content (name, desc, photo, link, code) VALUES (?, ?, ?, ?, ?)", (data['name'], data['desc'], data['photo'], data['link'], data['code']))
         db.commit()
 
 
@@ -19,7 +19,7 @@ async def find_by_id(id):
     'name': az[0],
     'desc': az[1],
     'photo': az[2],
-    'author': az[3],
+    'link': az[3],
     "code": az[4]
     }
     return res

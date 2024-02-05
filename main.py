@@ -8,7 +8,7 @@ from aiogram.types import Message
 from aiogram import F
 from aiogram.filters import CommandStart, CommandObject, Command
 from handlers import user, hokage
-from keyboards.base import based, hash
+from keyboards.base import true, hash, based
 from handlers.user import Cher
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -29,7 +29,7 @@ async def main():
         if msg.from_user.id in ADMINS: 
             await msg.answer_animation(g, caption="<b>А хули нам Хокагам</b>", reply_markup=hash())
         else:
-            await msg.answer_animation(bf, caption="""
+             await msg.answer_animation(bf, caption="""
             <b>Привет! Я твоя Тян!</b>\nЯ очень рада, чтобы здесь<i>\nПодписывайся скорее на канал, а потом я отправлю название аниме</i>""", 
             reply_markup=based())
     await dp.start_polling(bot)
